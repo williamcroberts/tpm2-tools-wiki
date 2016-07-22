@@ -16,6 +16,7 @@ tpm2.0-tools is heavily depending on TPM2.0-TSS project, so below is a list trac
 
    [v1.1-beta_0](https://github.com/01org/tpm2.0-tools/releases/tag/v1.1-beta_0) <-------->[v1.0-beta_0](https://github.com/01org/TPM2.0-TSS/releases/tag/v1.0-beta_0)
 
+   [v1.1-beta_1](https://github.com/01org/tpm2.0-tools/releases/tag/v1.1-beta_1) <-------->[1.0-beta_1](https://github.com/01org/TPM2.0-TSS/releases/tag/1.0-beta_1)
 
 ## Documentation
 * [[v1.0 Release Notes]]

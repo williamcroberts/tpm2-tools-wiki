@@ -137,6 +137,7 @@ Key has password:
 `$ tpm2_sign -c obj.ctx -P objectpass -g 0x000b -m msg.in -s sig.out -t tk.sig`
 
 * Verify signature with RSA key:
+
 `$ tpm2_verifysignature -c obj.ctx -g 0x000b -m msg.in -s sig.out -t tk.sig`
 
 (To be continued with command lines for some real usage cases.)

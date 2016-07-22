@@ -20,6 +20,7 @@ tpm2.0-tools is heavily depending on TPM2.0-TSS project, so below is a list trac
 
 ## Documentation
 * [[v1.0 Release Notes]]
+* [[How to use tpm2 tools]]
 
 ## Useful articles
 * [RSA signatures with TPM2.0 and OpenSSL](https://dguerriblog.wordpress.com/2016/03/03/tpm2-0-and-openssl-on-linux-2/)

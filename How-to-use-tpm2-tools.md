@@ -1,4 +1,4 @@
-The tpm2.0-tools manual seems too confusing for people new in tpm 2.0 related areas. This How-to article helps people get to know the basic usage of the tools provided by this project, and so be confident to continue using it.
+The tpm2.0-tools manual seems too confusing for people new to TPM 2.0 related areas. This HOW-TO article helps people get to know the basic usage of the tools provided by this project, and so be confident to continue using it.
 
 First of all, let's look at some self-contained tools.
 
@@ -22,7 +22,7 @@ First of all, let's look at some self-contained tools.
 
 `$ tpm2_hash -H n -g 0x0004 -I data.in -o hash.out -t tk.out`
 
-Then, let's understanding a word 'ownership' before continuing. TPM ownership means the authorization to do things need authentication first. So taking ownership on a TPM means setting authentication secrets into a TPM so that the ownership can be authenticated later via proving the knowledge of the existing authentication secrets.
+Then, let's understand a word 'ownership' before continuing. TPM ownership means the authorization to do things need authentication first. So taking ownership on a TPM means setting authentication secrets into a TPM so that the ownership can be authenticated later via proving the knowledge of the existing authentication secrets.
 
 * To take ownership with "ownerpass" as owner password, "endorsepass" as endorsement password, "lockpass" as lockout password:
 

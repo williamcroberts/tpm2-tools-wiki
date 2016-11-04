@@ -1,4 +1,4 @@
-The tpm2.0-tools manual seems too confusing for people new to TPM 2.0 related areas. This HOW-TO article helps people get to know the basic usage of the tools provided by this project, and so be confident to continue using it.
+The tpm2.0-tools manual seems too confusing for people new to TPM 2.0 related areas. This HOW-TO article helps people get to know the basic usage of the tools (v1.1.0) provided by this project, and so be confident to continue using it.
 
 First of all, let's look at some self-contained tools.
 
@@ -36,9 +36,9 @@ Then, let's understand a word 'ownership' before continuing. TPM ownership means
 
 `$ tpm2_takeownership -O ownerpassnew -E endorsepassnew -L lockpassnew`
 
-* To clear ownership(owner related resources will be released, but can only work while platform auth is NULL - BIOS didn't set authentication secrets for platform hierarchy):
+* To clear ownership(owner related resources will be released, but can only work while lockout auth is NULL or lockout password is known):
 
-`$ tpm2_takeownership -c`
+`$ tpm2_takeownership -c [-L lockpass]`
 
 Most tools can run with or without taking ownership, if not taking ownership, skip corresponding parameter when writing command line. Next up, command lines will be given in both cases for each tools.
 

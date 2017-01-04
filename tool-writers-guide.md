@@ -1,1 +1,0 @@
-This is a place holder for documentation describing the "right way" to use the new option processing / TCTI configuration / SAPI instantiation infrastructure. Topics that we need to cover here include how to port existing tools over to use this new infrastructure as well as how to write a new tool from scratch.

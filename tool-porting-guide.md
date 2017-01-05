@@ -25,3 +25,18 @@ To enable the incremental porting of each tool separately we decided to implemen
 This new module is capable of configuring and instantiating any of the supported TCTI modules but it must be provided with a description of the TCTI before it can create it. These options, per the requirements above, must come from the environment or the command line. The `options` module does just this but it brings to light a particular issue: It must be capable of parsing command line options separate from those required by each tool.
 
 The existing tools use `getopt_long` which is a bit unwieldy. `Argparse` would be much better suited to the task with its support for subparsers but porting each tool over to use this new infrastructure and a completely new options processing mechanism at the same time would cause a significant amount of undesirable churn. Though a bit awkward, `getopt` can be made to do what we need and with a minimal impact on the existing tools. Migrating to `argparse` can be done after this effort is complete.
+
+###documentation
+Man page fragments for the environment variables and command line options specific to the TCTIs are available in [tcti-options.troff](https://github.com/01org/tpm2.0-tools/blob/master/man/tcti-options.troff) and [tcti-environment.troff](https://github.com/01org/tpm2.0-tools/blob/master/man/tcti-environment.troff). Additionally common options like `--help` and `--verbose` are documented in the [common-options.troff](https://github.com/01org/tpm2.0-tools/blob/master/man/common-options.troff) fragment.
+
+These fragments can be used in the man pages for each tool using the hack in the the Makefile.am that replaces `@COMMON_OPTIONS_INCLUDE@`, `@TCTI_OPTIONS_INCLUDE@` and `@TCTI_ENVIRONMENT_INCLUDE@` strings with the contents of these files. See the generic [rule to build man pages](https://github.com/01org/tpm2.0-tools/blob/master/Makefile.am#L202) in the Makefile.am for the `sed` command that does this replacement. An example man page that uses this mechanism can be found here: https://github.com/01org/tpm2.0-tools/blob/master/man/tpm2_dump_capability.8.in
+
+###supported TCTIs
+The TCTIs supported by the tools build can be found by running `./configure --help` and looking for the lines that begin with `--with-tcti-*`. An example output looks like
+```
+  --with-tcti-device      Build tools with support for the device TCTI.
+  --with-tcti-socket      Build tools with support for the socket TCTI.
+```
+These correspond to the code blocks in `configure.ac` [here](https://github.com/01org/tpm2.0-tools/blob/master/configure.ac#L9) and [here](https://github.com/01org/tpm2.0-tools/blob/master/configure.ac#L27). Enabling / disabling these TCTIs will define (or not) the appropriate HAVE_TCTI_* symbol both in the Makefile.am and in the CFLAGS passed to each compilation unit. This allows the build to selectively enable / disable tools based on the TCTIs available, to enable / disable documentation blocks in the manpages, as well as allowing the C code to include the code blocks required to configure and instantiate the TCTI context.
+
+By default both the socket and device TCTI enabled but only tools that have been ported over to the new infrastructure will be able to use both. The remaining tools are still hard coded to the socket TCTI. Thus if the socket TCTI is *disabled* then the majority of the tools will not be built (and won't be till they're ported over to use this new infrastructure).

@@ -1,4 +1,4 @@
-This page provides useful information to those who wish to assist in porting existing tools over to use the newly added dynamic TCTI infrastructure. This new infrastructure was designed to make porting easy but there are a few things to keep in mind. We'll cover these things in depth here.
+This page provides useful information to those who wish to assist in porting existing tools over to use the newly added dynamic TCTI infrastructure. This new infrastructure was designed to make porting easy but there are a few things to keep in mind. We'll cover these things here step by step.
 
 ##Motivation
 In the TPM2 Software Stack (TSS2), TPM2 Command Transmission Interface (TCTI) modules are libraries that provide a standard send / receive interface for transmitting TPM2 command and response buffers. It's a mechanism intended to decouple the command / response transmission mechanism from the libraries that create the command / response buffers. This tight coupling was a significant flaw in the 1.2 TSS.

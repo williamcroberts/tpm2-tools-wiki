@@ -31,6 +31,8 @@ Man page fragments for the environment variables and command line options specif
 
 These fragments can be used in the man pages for each tool using the hack in the the Makefile.am that replaces `@COMMON_OPTIONS_INCLUDE@`, `@TCTI_OPTIONS_INCLUDE@` and `@TCTI_ENVIRONMENT_INCLUDE@` strings with the contents of these files. See the generic [rule to build man pages](https://github.com/01org/tpm2.0-tools/blob/master/Makefile.am#L202) in the Makefile.am for the `sed` command that does this replacement. An example man page that uses this mechanism can be found here: https://github.com/01org/tpm2.0-tools/blob/master/man/tpm2_dump_capability.8.in
 
+As each tool is ported over to use this new infrastructure the `--help` option will launch the `man` program to display the man page for the tool executed. This is intended to remove the rather large blocks of text we're embedding in the tool code currently and to reduce duplicate text across the man pages and the tool code.
+
 ###supported TCTIs
 The TCTIs supported by the tools build can be found by running `./configure --help` and looking for the lines that begin with `--with-tcti-*`. An example output looks like
 ```
@@ -40,3 +42,12 @@ The TCTIs supported by the tools build can be found by running `./configure --he
 These correspond to the code blocks in `configure.ac` [here](https://github.com/01org/tpm2.0-tools/blob/master/configure.ac#L9) and [here](https://github.com/01org/tpm2.0-tools/blob/master/configure.ac#L27). Enabling / disabling these TCTIs will define (or not) the appropriate HAVE_TCTI_* symbol both in the Makefile.am and in the CFLAGS passed to each compilation unit. This allows the build to selectively enable / disable tools based on the TCTIs available, to enable / disable documentation blocks in the manpages, as well as allowing the C code to include the code blocks required to configure and instantiate the TCTI context.
 
 By default both the socket and device TCTI enabled but only tools that have been ported over to the new infrastructure will be able to use both. The remaining tools are still hard coded to the socket TCTI. Thus if the socket TCTI is *disabled* then the majority of the tools will not be built (and won't be till they're ported over to use this new infrastructure).
+
+##Porting an Existing Tool
+When porting a tool over to this new infrastructure there are several steps that should be followed:
+
+1. Replace the tools `main` function with a function named `execute_tool`. The code common to each tool is now factored out into the [main.c/h module](https://github.com/01org/tpm2.0-tools/blob/master/src/main.c) where a common `main` function for all tools now resides. Each tool should instead implement a function called `execute_tool` that is called from `main`. This function should do whatever it is the tool does and then return. After it returns the `main` module will do all necessary tear-down.
+2. Remove all duplicate option parsing from the tool code. The options that are parsed by the `options` module include `--help`, `--version` etc. The complete list can be found in the definition of the `option` structure in [options.c](https://github.com/01org/tpm2.0-tools/blob/master/src/options.c#L182).
+3. Move the build rule for the tool from the `sbin_PROGRAMS` block within the `HAVE_TCTI_SOCK` ifdef to the main `sbin_PROGRAMS` block above. Also the `main.c` module must be added to the `SOURCES` build variable for the tool. A good example can be found here: https://github.com/01org/tpm2.0-tools/pull/133/commits/c585d803380946b6c32b80706d9636b382363b8f NOTE: update this reference once the PR is merged.
+4. Improve the man page for the command. Each command now has a man page thanks to 56be3251567bbb1758325c2d90f07f7be14def9c but some manual intervention is required to improve formatting and content.
+5. Last and likely the most difficult is decoupling the dependencies for the tool from the `common` module.

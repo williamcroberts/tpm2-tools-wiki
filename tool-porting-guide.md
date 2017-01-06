@@ -48,13 +48,12 @@ The easiest way to explain how to port an existing tool to use this infrastructu
 1. Tool code changes.
 2. Build changes.
 3. Refactoring code in the common module.
-4. Cleanup
 
 ###Example: tpm2_createprimary
-Personally I've included changes from category 3 into separate commits, and those from 1, 2 and 4 into a single commit. Using `tpm2_createprimary` as an example, the associated commits broken down into category 1/2 is in [1627714b83e0246b6e62364094ec3168d812b21a](https://github.com/01org/tpm2.0-tools/commit/1627714b83e0246b6e62364094ec3168d812b21a), while [2916fba202b559d7ff654b73191f0cd2fc878bb1](https://github.com/01org/tpm2.0-tools/commit/2916fba202b559d7ff654b73191f0cd2fc878bb1), 
+Personally I've included changes from category 3 into separate commits, and those from 1 and 2 into a single commit. Using `tpm2_createprimary` as an example, the associated commits broken down into category 1/2 is in [1627714b83e0246b6e62364094ec3168d812b21a](https://github.com/01org/tpm2.0-tools/commit/1627714b83e0246b6e62364094ec3168d812b21a), while [2916fba202b559d7ff654b73191f0cd2fc878bb1](https://github.com/01org/tpm2.0-tools/commit/2916fba202b559d7ff654b73191f0cd2fc878bb1), 
 [037d4817ab100017ff34471efe0df94db669b6b3](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3) and [825c156af7c906564a3925e165d9f5d5878cfafa](https://github.com/01org/tpm2.0-tools/commit/825c156af7c906564a3925e165d9f5d5878cfafa) fall into category 3. Let's go through the common module refactoring first.
 
-####Common Module Refactoring
+###Common Module Refactoring
 The `common.c/h` is exactly what the name says: common functions. 'common' is a pretty big bucket though and it's full of largely unrelated stuff. The `tpm2_createprimary` tool does 3 things:
 
 1. Assembles command line parameters and transforms them into some form needed by the tool.
@@ -68,11 +67,17 @@ Using this approach the `common` module will eventually contain only the legacy 
 1. [2916fba202b559d7ff654b73191f0cd2fc878bb1](https://github.com/01org/tpm2.0-tools/commit/2916fba202b559d7ff654b73191f0cd2fc878bb1) for functions manipulating files
 2. [037d4817ab100017ff34471efe0df94db669b6b3](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3) for functions converting strings into binary representations
 
-Once these functions were moved into separate modules these files can be built separate from the `common` module and so they can be built regardless of which TCTI is configured and so their implementation files are included in the `COMMON_SRC` variable outside of the `ifdef HAVE_TCTI_SOCKET` block. Look at the change to `Makefile.am` [here](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3#diff-c949f93d03f44a4217d7a138f9e2e54a). This block is necessary due to some bizarre dependencies the `common` module has on symbols leaked by libtcti-socket (that I'm not going to describe in detail here).
+Once these functions were moved into separate modules these files can be built separate from the `common` module and so they can be built regardless of which TCTI is configured. Their implementation files are then included in the `COMMON_SRC` variable outside of the `ifdef HAVE_TCTI_SOCKET` block. Look at the change to `Makefile.am` [here](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3#diff-c949f93d03f44a4217d7a138f9e2e54a). This block is necessary due to some bizarre dependencies the `common` module has on symbols leaked by libtcti-socket (that I won't get into here).
 
+It's also very possible that a function from the common module should be factored out into an *existing* module. The two examples above discuss creating new code modules but it's increasingly likely that the code you need to remove from `common` is closely related to an existing module and should be moved there. Keep in mind that this is preferable to creating / adding a new source file. A good example is [825c156af7c906564a3925e165d9f5d5878cfafa](https://github.com/01org/tpm2.0-tools/commit/825c156af7c906564a3925e165d9f5d5878cfafa).
 
-1. Replace the tools `main` function with a function named `execute_tool`. The code common to each tool is now factored out into the [main.c/h module](https://github.com/01org/tpm2.0-tools/blob/master/src/main.c) where a common `main` function for all tools now resides. Each tool should instead implement a function called `execute_tool` that is called from `main`. This function should do whatever it is the tool does and then return. After it returns the `main` module will do all necessary tear-down.
-2. Remove all duplicate option parsing from the tool code. The options that are parsed by the `options` module include `--help`, `--version` etc. The complete list can be found in the definition of the `option` structure in [options.c](https://github.com/01org/tpm2.0-tools/blob/master/src/options.c#L182).
-3. Move the build rule for the tool from the `sbin_PROGRAMS` block within the `HAVE_TCTI_SOCK` ifdef to the main `sbin_PROGRAMS` block above. Also the `main.c` module must be added to the `SOURCES` build variable for the tool. A good example can be found here: https://github.com/01org/tpm2.0-tools/pull/133/commits/c585d803380946b6c32b80706d9636b382363b8f NOTE: update this reference once the PR is merged.
-4. Improve the man page for the command. Each command now has a man page thanks to 56be3251567bbb1758325c2d90f07f7be14def9c but some manual intervention is required to improve formatting and content.
-5. Last and likely the most difficult is decoupling the dependencies for the tool from the `common` module. Each code module that the tool being ported depends upon must be moved like the tool code itself in #3. Moving these modules requires decoupling them from the old SAPI & TCTI instantiation logic in `common.c`. Ideally once all tools have been ported common.c will have only this code in it and it will be deleted. In the meantime as each tool is ported the `common` code that it requires should be refactored and removed from the `common.c` module. There is no simple way to describe how this should be done and it will require the developers intuition and judgement.
+###Build Changes
+I recommend thinking of the changes to the build being our real end goal in this exercise. It sounds weird but in the end we want to successfully move the source file for our tool `$(SRCDIR)/src/tpm2_createprimary.c` and move it out of the `ifdef HAVE_TCTI_SOCKET`. The refactoring exercise in the previous section was required to break the dependency on the `common` module which cannot be built without the socket TCTI. So one way to figure out everything that will be required to port a tool would be to start with these build changes and then debug the various compiler / linker errors as they happen.
+
+The relevant commit for our example is [here](https://github.com/01org/tpm2.0-tools/commit/1627714b83e0246b6e62364094ec3168d812b21a#diff-c949f93d03f44a4217d7a138f9e2e54a).
+
+###Tool Code Changes
+Each tool is different so there's no silver bullet here. Each however will need to at the very least remove their processing of TCTI and common options. This is stuff like `--version`, `--help`, `--port`, and `debug`. Additionally most of the tools (all?) depend on a few global symbols from the `common` module. Mostly this is stuff like the SAPI context object. The diff for this change in `tpm2_createprimary` are [here](https://github.com/01org/tpm2.0-tools/commit/1627714b83e0246b6e62364094ec3168d812b21a#diff-20e0543f918c01063f818b4692c0cda9).
+
+##Conclusion
+That's about it. If you find bugs in this doc while porting a tool then place file a bug against the documentation, and maybe the tool in question too.

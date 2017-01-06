@@ -50,9 +50,9 @@ The easiest way to explain how to port an existing tool to use this infrastructu
 3. Refactoring code in the common module.
 4. Cleanup
 
-###tpm2_createprimary example
-Personally I've included changes from category 3 into separate commits, and those from 1, 2 and 4 into a single commit. Using `tpm2_createprimary` as an example the associated commits broken down into category 1/2 is in 1627714b83e0246b6e62364094ec3168d812b21a, while 2916fba202b559d7ff654b73191f0cd2fc878bb1, 
-037d4817ab100017ff34471efe0df94db669b6b3 and 825c156af7c906564a3925e165d9f5d5878cfafa fall into category 3. Let's go through the common module refactoring first.
+###Example: tpm2_createprimary
+Personally I've included changes from category 3 into separate commits, and those from 1, 2 and 4 into a single commit. Using `tpm2_createprimary` as an example, the associated commits broken down into category 1/2 is in [1627714b83e0246b6e62364094ec3168d812b21a](https://github.com/01org/tpm2.0-tools/commit/1627714b83e0246b6e62364094ec3168d812b21a), while [2916fba202b559d7ff654b73191f0cd2fc878bb1](https://github.com/01org/tpm2.0-tools/commit/2916fba202b559d7ff654b73191f0cd2fc878bb1), 
+[037d4817ab100017ff34471efe0df94db669b6b3](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3) and [825c156af7c906564a3925e165d9f5d5878cfafa](https://github.com/01org/tpm2.0-tools/commit/825c156af7c906564a3925e165d9f5d5878cfafa) fall into category 3. Let's go through the common module refactoring first.
 
 ####Common Module Refactoring
 The `common.c/h` is exactly what the name says: common functions. 'common' is a pretty big bucket though and it's full of largely unrelated stuff. The `tpm2_createprimary` tool does 3 things:
@@ -65,8 +65,8 @@ Of these functions, those that are in the `common` module generally fall into th
 
 Using this approach the `common` module will eventually contain only the legacy context management code. When the last tool is ported this module can then just be deleted. Till then as each tool is ported, the dependencies it has in the `common` module must be factored out into separate modules. For `tpm2_createprimary` I factored these functions into two new modules in two commits:
 
-1. 2916fba202b559d7ff654b73191f0cd2fc878bb1 for functions manipulating files
-2. 037d4817ab100017ff34471efe0df94db669b6b3 for functions converting strings into binary representations
+1. [2916fba202b559d7ff654b73191f0cd2fc878bb1](https://github.com/01org/tpm2.0-tools/commit/2916fba202b559d7ff654b73191f0cd2fc878bb1) for functions manipulating files
+2. [037d4817ab100017ff34471efe0df94db669b6b3](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3) for functions converting strings into binary representations
 
 Once these functions were moved into separate modules these files can be built separate from the `common` module and so they can be built regardless of which TCTI is configured and so their implementation files are included in the `COMMON_SRC` variable outside of the `ifdef HAVE_TCTI_SOCKET` block. Look at the change to `Makefile.am` [here](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3#diff-c949f93d03f44a4217d7a138f9e2e54a). This block is necessary due to some bizarre dependencies the `common` module has on symbols leaked by libtcti-socket (that I'm not going to describe in detail here).
 

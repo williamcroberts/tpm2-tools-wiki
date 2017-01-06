@@ -44,7 +44,32 @@ These correspond to the code blocks in `configure.ac` [here](https://github.com/
 By default both the socket and device TCTI enabled but only tools that have been ported over to the new infrastructure will be able to use both. The remaining tools are still hard coded to the socket TCTI. Thus if the socket TCTI is *disabled* then the majority of the tools will not be built (and won't be till they're ported over to use this new infrastructure).
 
 ##Porting an Existing Tool
-When porting a tool over to this new infrastructure there are several steps that should be followed:
+The easiest way to explain how to port an existing tool to use this infrastructure is to walk through an example. The `tpm2_createprimary` and `tpm2_create` tools have already been ported and so we'll use the commits associated with these ports to demonstrate. The commits associated generally fall into 3 categories:
+1. Tool code changes.
+2. Build changes.
+3. Refactoring code in the common module.
+4. Cleanup
+
+###tpm2_createprimary example
+Personally I've included changes from category 3 into separate commits, and those from 1, 2 and 4 into a single commit. Using `tpm2_createprimary` as an example the associated commits broken down into category 1/2 is in 1627714b83e0246b6e62364094ec3168d812b21a, while 2916fba202b559d7ff654b73191f0cd2fc878bb1, 
+037d4817ab100017ff34471efe0df94db669b6b3 and 825c156af7c906564a3925e165d9f5d5878cfafa fall into category 3. Let's go through the common module refactoring first.
+
+####Common Module Refactoring
+The `common.c/h` is exactly what the name says: common functions. 'common' is a pretty big bucket though and it's full of largely unrelated stuff. The `tpm2_createprimary` tool does 3 things:
+
+1. Assembles command line parameters and transforms them into some form needed by the tool.
+2. Executes a TPM2 command (`TPM2_CreatePrimary` to be precise).
+3. Saves some data to disk (the context returned by the call to `TPM2_CreatePrimary`).
+
+Of these functions, those that are in the `common` module generally fall into the first and third group. The global data associated with this context management in the legacy code makes moving individual tools over to use the new infrastructure without making structural changes to each tool (generally this means breaking their dependence on the global state). Instead it's easier to move code out of the common module and then have each individual tool come up with it's own scheme for breaking its dependence on the global state that's no longer available.
+
+Using this approach the `common` module will eventually contain only the legacy context management code. When the last tool is ported this module can then just be deleted. Till then as each tool is ported, the dependencies it has in the `common` module must be factored out into separate modules. For `tpm2_createprimary` I factored these functions into two new modules in two commits:
+
+1. 2916fba202b559d7ff654b73191f0cd2fc878bb1 for functions manipulating files
+2. 037d4817ab100017ff34471efe0df94db669b6b3 for functions converting strings into binary representations
+
+Once these functions were moved into separate modules these files can be built separate from the `common` module and so they can be built regardless of which TCTI is configured and so their implementation files are included in the `COMMON_SRC` variable outside of the `ifdef HAVE_TCTI_SOCKET` block. Look at the change to `Makefile.am` [here](https://github.com/01org/tpm2.0-tools/commit/037d4817ab100017ff34471efe0df94db669b6b3#diff-c949f93d03f44a4217d7a138f9e2e54a). This block is necessary due to some bizarre dependencies the `common` module has on symbols leaked by libtcti-socket (that I'm not going to describe in detail here).
+
 
 1. Replace the tools `main` function with a function named `execute_tool`. The code common to each tool is now factored out into the [main.c/h module](https://github.com/01org/tpm2.0-tools/blob/master/src/main.c) where a common `main` function for all tools now resides. Each tool should instead implement a function called `execute_tool` that is called from `main`. This function should do whatever it is the tool does and then return. After it returns the `main` module will do all necessary tear-down.
 2. Remove all duplicate option parsing from the tool code. The options that are parsed by the `options` module include `--help`, `--version` etc. The complete list can be found in the definition of the `option` structure in [options.c](https://github.com/01org/tpm2.0-tools/blob/master/src/options.c#L182).

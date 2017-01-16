@@ -71,6 +71,9 @@ Once these functions were moved into separate modules these files can be built s
 
 It's also very possible that a function from the common module should be factored out into an *existing* module. The two examples above discuss creating new code modules but it's increasingly likely that the code you need to remove from `common` is closely related to an existing module and should be moved there. Keep in mind that this is preferable to creating / adding a new source file. A good example is [825c156af7c906564a3925e165d9f5d5878cfafa](https://github.com/01org/tpm2.0-tools/commit/825c156af7c906564a3925e165d9f5d5878cfafa).
 
+####Build without the socket TCTI
+A good test to be sure you've decoupled the tool from the `common` module is to build it with the common module disabled. Since `common.c` depends on the socket TCTI the best way to disable it is to disable the socket TCTI at `./configure` time. To do this just supply the configure script the `--without-tcti-socket` option. If you've successfully broken the dependency on `common.c` then your tool should build without the socket TCTI.
+
 ###Build Changes
 I recommend thinking of the changes to the build being our real end goal in this exercise. It sounds weird but in the end we want to successfully move the source file for our tool `$(SRCDIR)/src/tpm2_createprimary.c` and move it out of the `ifdef HAVE_TCTI_SOCKET`. The refactoring exercise in the previous section was required to break the dependency on the `common` module which cannot be built without the socket TCTI. So one way to figure out everything that will be required to port a tool would be to start with these build changes and then debug the various compiler / linker errors as they happen.
 

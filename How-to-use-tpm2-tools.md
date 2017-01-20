@@ -134,7 +134,7 @@ Key doesn't have password:
 
 Key has password:
 
-`$ tpm2_sign -c obj.ctx -P subobjectpass -g 0x000b -m msg.in -s sig.out -t tk.sig`
+`$ tpm2_sign -c obj.ctx -P subobjectpass -g 0x000b -m msg.in -s sig.out`
 
 * Verify signature with RSA key:
 

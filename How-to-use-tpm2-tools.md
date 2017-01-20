@@ -106,11 +106,11 @@ Parent has password:
 
 Parent doesn't have password:
 
-`$ tpm2_load -c po.ctx -u key.pub -O key.priv -n key.name -C obj.ctx`
+`$ tpm2_load -c po.ctx -u key.pub -r key.priv -n key.name -C obj.ctx`
 
 Parent has password:
 
-`$ tpm2_load -c po.ctx -P objectpass -u key.pub -O key.priv -n key.name -C obj.ctx`
+`$ tpm2_load -c po.ctx -P objectpass -u key.pub -r key.priv -n key.name -C obj.ctx`
 
 * Encrypt with RSA key:
 

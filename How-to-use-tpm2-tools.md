@@ -130,7 +130,7 @@ Key has password:
 
 Key doesn't have password:
 
-`$ tpm2_sign -c obj.ctx -g 0x000b -m msg.in -s sig.out -t tk.sig`
+`$ tpm2_sign -c obj.ctx -g 0x000b -m msg.in -s sig.out`
 
 Key has password:
 

@@ -20,6 +20,10 @@ tpm2.0-tools is heavily depending on TPM2.0-TSS project, so below is a list trac
 
    [v1.1.0](https://github.com/01org/tpm2.0-tools/releases/tag/v1.1.0) <-------->[1.0](https://github.com/01org/TPM2.0-TSS/releases/tag/1.0)
 
+   [v2.0.0](https://github.com/01org/tpm2.0-tools/releases/tag/2.0.0) <-------->[1.0](https://github.com/01org/TPM2.0-TSS/releases/tag/1.0)
+
+   [df751ae](https://github.com/01org/tpm2.0-tools/tree/df751ae5bea0bb057c9ee4cb0c1176c48ff68492)(master) <-------> [1.1.0](https://github.com/01org/TPM2.0-TSS/releases/tag/1.1.0) + tpm2-abrmd [1.0.0](https://github.com/01org/tpm2-abrmd/releases/tag/1.0.0)
+
 ## Documentation
 * [[v1.0 Release Notes]]
 * [[How to use tpm2 tools]]

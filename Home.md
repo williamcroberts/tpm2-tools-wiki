@@ -2,8 +2,6 @@
 ## Dependencies
 tpm2-tools is heavily depending on tpm2-tss project, so below is a list tracking the dependencies of each release/tag of tpm2-tools.
 
-**tpm2-tools tpm2-tss**
-
 | tpm2-tools version | tpm2-tss version | tpm2-abrmd version|
 |--------------------|------------------|-------------------|
 |[v1.0.1](https://github.com/01org/tpm2.0-tools/releases/tag/v1.0.1)|[1.0-alpha_0](https://github.com/01org/TPM2.0-TSS/releases/tag/1.0-alpha_0)|old resourcemgr|

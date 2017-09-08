@@ -4,6 +4,7 @@ tpm2-tools is heavily depending on tpm2-tss project, so below is a list tracking
 
 | tpm2-tools version | tpm2-tss version | tpm2-abrmd version|
 |--------------------|------------------|-------------------|
+|[master](https://github.com/01org/tpm2-tools)|[master](https://github.com/01org/tpm2-tss)|[master](https://github.com/01org/tpm2-abrmd)|
 |[2.1.0](https://github.com/01org/tpm2-tools/releases/tag/2.1.0)|[1.2.0](https://github.com/01org/tpm2-tss/releases/tag/1.2.0)|[1.1.1](https://github.com/01org/tpm2-abrmd/releases/tag/1.1.1)|
 |[df751ae](https://github.com/01org/tpm2.0-tools/tree/df751ae5bea0bb057c9ee4cb0c1176c48ff68492)(master)|[1.1.0](https://github.com/01org/TPM2.0-TSS/releases/tag/1.1.0)|[1.0.0](https://github.com/01org/tpm2-abrmd/releases/tag/1.0.0)|
 |[v2.0.0](https://github.com/01org/tpm2.0-tools/releases/tag/2.0.0)|[1.0](https://github.com/01org/TPM2.0-TSS/releases/tag/1.0)|old resourcemgr|

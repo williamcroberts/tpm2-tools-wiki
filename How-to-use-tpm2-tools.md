@@ -4,7 +4,7 @@ First of all, let's look at some self-contained tools.
 
 * To list values for all available pcrs:
 
-`$ tpm2_listpcrs`
+`$ tpm2_pcrlist`
 
 * To list info about existing NV indices:
 

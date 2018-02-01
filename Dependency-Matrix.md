@@ -2,6 +2,8 @@
 
 tpm2-tools has an intricate dependency on the tpm2-tss project and the tpm2-abrmd project. so below is a list tracking the dependencies of each release/tag of tpm2-tools.
 
+** NOTE: tpm2-abrmd is an optional but suggested component **
+
 | tpm2-tools version | tpm2-tss version | tpm2-abrmd version|
 |--------------------|------------------|-------------------|
 |[master](https://github.com/01org/tpm2-tools)|[master](https://github.com/01org/tpm2-tss)|[master](https://github.com/01org/tpm2-abrmd)|

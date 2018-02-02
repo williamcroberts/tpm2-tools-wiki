@@ -26,7 +26,7 @@ The tools are clients, that perform those three steps.
 
 Start off by satisfying all dependencies. Depending on what
 version of the tpm2-tools is being used, you may need different
-versions. Please consult the [https://github.com/tpm2-software/tpm2-tools/wiki/Dependency-Matrix](dependency matrix).
+versions. Please consult the [dependency matrix](https://github.com/tpm2-software/tpm2-tools/wiki/Dependency-Matrix).
 
 please install:
   - [tss](https://github.com/tpm2-software/tpm2-tss)

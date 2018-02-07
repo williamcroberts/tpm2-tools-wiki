@@ -42,8 +42,9 @@ sudo apt-get install lcov pandoc autoconf-archive
 # install package manage deps for tss
 sudo apt-get install liburiparser-dev
 
-# install package manage deps for abrmd
-sudo apt-get install libdbus-1-dev libglib2.0-dev
+# install package manager deps for abrmd
+# Note: the dbus-x11 dependency is for dbus-launch not for abrmd itself.
+sudo apt-get install libdbus-1-dev libglib2.0-dev dbus-x11
 
 # install TSS itself
 git clone https://github.com/tpm2-software/tpm2-tss.git
@@ -58,7 +59,7 @@ git clone https://github.com/tpm2-software/tpm2-abrmd.git
 cd tpm2-abrmd
 ./bootstrap
 ./configure --enable-unit --with-dbuspolicydir=/etc/dbus-1/system.d
-make check
+dbus-launch make check
 sudo make install
 
 # Install tools itself

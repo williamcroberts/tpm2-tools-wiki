@@ -96,7 +96,7 @@ make
 Now, while still in the src directory from section *Installing the TPM2.0 Simulator*
 
 ```
-./tpm2_server &
+./tpm_server &
 TPM command server listening on port 2321
 Platform server listening on port 2322
 ```
@@ -111,11 +111,11 @@ With that said, lets start the RM:
 ```
 tpm2-abrmd --allow-root
 ```
-abrmd is designed by default to connect to the tpm2_server that was started previously.
+abrmd is designed by default to connect to the `tpm_server` that was started previously.
 
 # Hello World
 
-With the tpm2_server and the abrmd running, we can run a tool to get the pcr values
+With the `tpm_server` and the abrmd running, we can run a tool to get the pcr values
 of a tpm. Running the ```tpm2_pcrlist``` command should yield a result like below:
 ```
 tpm2_pcrlist 

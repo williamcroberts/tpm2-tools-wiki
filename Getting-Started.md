@@ -63,7 +63,7 @@ sudo make install
 
 # Install tools itself
 git clone https://github.com/tpm2-software/tpm2-tools.git
-cd tpm2-abrmd
+cd tpm2-tools
 ./bootstrap
 ./configure --enable-unit
 make check

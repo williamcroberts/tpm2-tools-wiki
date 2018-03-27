@@ -8,8 +8,8 @@
 | -c | --context | tpm2_evictcontrol, tpm2_createek | file path | |
 | -c | --context-parent | tpm2_create | file path | |
 | -c | --key-context | tpm2_certify, tpm2_encryptdecrypt, tpm2_hmac | file path | |
-| -c | --clear | tpm2_clearlock | NA | |
-| -c | --clear-lockout | tpm2_dictionarylockout | NA | |
+| -c | --clear | tpm2_clearlock | N/A | |
+| -c | --clear-lockout | tpm2_dictionarylockout | N/A | |
 | -e | --endorse-password | tpm2_activatecredential, tpm2_changeauth | password | |
 | -e | --endorse-passwd | tpm2_getmanufec, tpm2_createak, tpm2_createek | password | |
 | -f | --in-file | tpm2_activatecredential, tpm2_certify | file path | |
@@ -34,7 +34,7 @@
 | -s | --sig-file | tpm2_certify | file path | |
 | -s | --setup-parameters | tpm2_dictionarylockout | N/A | |
 | -t | --transient-object | tpm2_flushcontext | N/A | |
-| -t | --ticket | tpm2_hash | file path | N/A |
+| -t | --ticket | tpm2_hash | file path | |
 | -u | --pubfile | tpm2_create | file path | |
 | -x | --pcr-index | - | - | - | goal |
 | -A | --auth | tpm2_evictcontrol | character representing hierarchy (o or p) | |
@@ -43,7 +43,7 @@
 | -C | --obj-context | tpm2_certify | file path | |
 | -C | --context | tpm2_createprimary | file path | |
 | -C | --capability | tpm2_getcap | capability name | |
-| -D | --decrypt | tpm2_encryptdecrypt | NA | |
+| -D | --decrypt | tpm2_encryptdecrypt | N/A | |
 | -E | --old-endorse-passwd | tpm2_changeauth | password | |
 | -E | --ec-cert | tpm2_getmanufec | file path | |
 | -E | --ek-handle | tpm2_getcreateak | hex handle id | |

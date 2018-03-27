@@ -5,72 +5,117 @@
 |------------|-----------|---------|---------------|-----------|
 | -a | --attest-file | tpm2_certify | file path | |
 | -a | --auth-policy-session | tpm2_createpolicy | TPM session policy | |
+| -a | --auth-policy-session | tpm2_startauthsession | N/A | |
+| -a | --auth-handle | tpm2_nvdefine, tpm2_nvread, tpm2_nvreadlock, tpm2_nvrelease, tpm2_nvwrite | char handle pretty name | |
 | -c | --context | tpm2_evictcontrol, tpm2_createek | file path | |
-| -c | --context-parent | tpm2_create | file path | |
-| -c | --key-context | tpm2_certify, tpm2_encryptdecrypt, tpm2_hmac | file path | |
-| -c | --clear | tpm2_clearlock | N/A | |
+| -c | --ak-context | tpm2_quote, tpm2_readpublic | file path | |
+| -c | --context-parent | tpm2_create, tpm2_load | file path | |
+| -c | --key-context | tpm2_certify, tpm2_encryptdecrypt, tpm2_hmac, tpm2_rsadecrypt, tpm2_rsaencrypt, tpm2_sign, tpm2_verifysignature | file path | |
+| -c | --item-context | tpm2_unseal | file path | |
+| -c | --clear | tpm2_clearlock. tpm2_startup | N/A | |
 | -c | --clear-lockout | tpm2_dictionarylockout | N/A | |
 | -e | --endorse-password | tpm2_activatecredential, tpm2_changeauth | password | |
 | -e | --endorse-passwd | tpm2_getmanufec, tpm2_createak, tpm2_createek | password | |
+| -e | --enc-key | tpm2_makecredential | file path | |
 | -f | --in-file | tpm2_activatecredential, tpm2_certify | file path | |
-| -f | --policy-file | tpm2_createpolicy | file path | |
-| -f | --format | tpm2_certify | signature format | |
-| -f | --out-file | tpm2_getmanufec | file path | |
-| -g | --halg | tpm2_create, tpm2_createprimary, tpm2_hash, tpm2_hmac | hash algorithm | |
-| -g | --policy-digest-alg | tpm2_createpolicy | hash algorithm | |
-| -g | --algorithm | tpm2_getmanufec, tpm2_createak, tpm2_createek | algorithm specifier | |
-| -k | --key-handle | tpm2_activatecredential, tpm2_encryptdecrypt, tpm2_hmac | hex handle id | |
-| -k | --ak-handle | tpm2_createak | hex handle id | |
+| -f | --policy-file | tpm2_createpolicy, tpm2_policypcr | file path | |
+| -f | --format | tpm2_certify, tpm2_quote, tpm2_sign | signature format | |
+| -f | --format | pubkey options | pub key format | |
+| -f | --out-file | tpm2_getmanufec, tpm2_nvread | file path | |
+| -f | --parent-key-public | tpm2_import | file path | |
+| -f | --file | tpm2_print | file path | |
+| -g | --halg | tpm2_create, tpm2_createprimary, tpm2_hash, tpm2_hmac, tpm2_listpersistent, tpm2_sign, tpm2_verifysignature | hash algorithm | |
+| -g | --policy-digest-alg | tpm2_createpolicy, tpm2_startauthsession | hash algorithm | |
+| -g | --algorithm | tpm2_getmanufec, tpm2_createak, tpm2_createek, tpm2_pcrlist | algorithm specifier | |
+| -h | --help | common option | N/A |
+| -i | --pcr-index | tpm2_pcrevent | pcr index | |
+| -i | --input | tpm2_send | file path | |
+| -k | --key-handle | tpm2_activatecredential, tpm2_encryptdecrypt, tpm2_hmac, tpm2_rsadecrypt, tpm2_rsaencrypt, tpm2_sign, tpm2_verifysignature | hex handle id | |
+| -k | --ak-handle | tpm2_createak, tpm2_quote | hex handle id | |
+| -k | --input-key-file | tpm2_import | file path | |
 | -l | --lockout-passwd | tpm2_clear | password | |
 | -l | --loaded-session | tpm2_flushcontext | N/A | |
 | -l | --list | tpm2_getcap | N/A | |
-| -o | --out-file | tpm2_activatecredential, tpm2_getrandom, tpm2_hash, tpm2_hmac |  file path | |
+| -l | --id-list | tpm2_quote | (string) list of PCR IDs | |
+| -m | --message | tpm2_quote, tpm2_sign, tpm2_verifysignature | file path | |
+| -n | --name | tpm2_load | file path | |
+| -n | --name | tpm2_makecredential | string | |
+| -o | --out-file | tpm2_activatecredential, tpm2_getrandom, tpm2_hash, tpm2_hmac, tpm2_makecredential, tpm2_pcrlist, tpm2_readpublic, tpm2_rsadecrypt, tpm2_rsaencrypt, tpm2_send, tpm2_unseal |  file path | |
 | -o | --owner-passwd | tpm2_changeauth, tpm2_getmanufec, tpm2_createak, tpm2_createek | password | |
+| -o | --offset | tpm2_nvread, tpm2_nvwrite | offset within index | |
 | -p | --persistent | tpm2_evictcontrol | hex handle id | |
 | -p | --platform | tpm2_clear, tpm2_clearlock | N/A | |
 | -p | --file | tpm2_createek | file path | |
-| -r | --privfile | tpm2_create | file path | |
+| -q | --import-key-public | tpm2_import | file path | |
+| -q | --qualify-data | tpm2_quote | hex string | |
+| -r | --privfile | tpm2_create, tpm2_load, tpm2_loadexternal | file path | |
+| -r | --import-key-private | tpm2_import | file path | |
+| -r | --raw | tpm2_verifysignature | N/A | |
 | -s | --saved-session | tpm2_flushcontext | N/A | |
 | -s | --sig-file | tpm2_certify | file path | |
+| -s | --signature | tpm2_quote | file path | |
 | -s | --setup-parameters | tpm2_dictionarylockout | N/A | |
+| -s | --sec | tpm2_makecredential | file path | |
+| -s | --size | tpm2_nvdefine, tpm2_nvread, tpm2_nvrelease | size in bytes | |
+| -s | --algs | tpm2_pcrlist | N/A | |
+| -s | --sig | tpm2_sign, tpm2_verifysignature | file path | |
 | -t | --transient-object | tpm2_flushcontext | N/A | |
-| -t | --ticket | tpm2_hash | file path | |
-| -u | --pubfile | tpm2_create | file path | |
+| -t | --ticket | tpm2_hash, tpm2_sign, tpm2_verifysignature | file path | |
+| -t | --attributes | tpm2_nvdefine | NV attributes | |
+| -t | --type | tpm2_print | `TPMS_ATTEST` | |A
+| -u | --pubfile | tpm2_create, tpm2_load, tpm2_loadexternal | file path | |
+| -v | --version | common option | N/A |
 | -x | --pcr-index | - | - | - | goal |
+| -x | --nv-index | tpm2_nvdefine | index id | |
+| -x | --index | tpm2_nvread, tpm2_nvreadlock, tpm2_nvrelease, tpm2_nvwrite | index id | |
 | -A | --auth | tpm2_evictcontrol | character representing hierarchy (o or p) | |
 | -A | --object-attributes | tpm2_create, tpm2_createprimary | object attributes | |
 | -C | --key-context | tpm2_activatecredential | file path | |
 | -C | --obj-context | tpm2_certify | file path | |
-| -C | --context | tpm2_createprimary | file path | |
+| -C | --context | tpm2_createprimary, tpm2_load, tpm2_loadexternal | file path | |
 | -C | --capability | tpm2_getcap | capability name | |
 | -D | --decrypt | tpm2_encryptdecrypt | N/A | |
+| -D | --digest | tpm2_sign, tpm2_verifysignature | file path | |
 | -E | --old-endorse-passwd | tpm2_changeauth | password | |
 | -E | --ec-cert | tpm2_getmanufec | file path | |
 | -E | --ek-handle | tpm2_getcreateak | hex handle id | |
-| -F | --pcr-input-file | tpm2_createpolicy | file path | |
-| -G | --kalg | tpm2_create, tpm2_createprimary | key algorithm | |
+| -F | --pcr-input-file | tpm2_createpolicy, tpm2_nvread, tpm2_nvwrite, tpm2_policypcr, tpm2_unseal | file path | |
+| -G | --kalg | tpm2_create, tpm2_createprimary, tpm2_listpersistent | key algorithm | |
+| -G | --sig-hash-algorithm | tpm2_quote | hash algorithm | |
 | -H | --handle | tpm2_evictcontrol, tpm2_activatecredential, tpm2_flushcontext, tpm2_getmanufec, tpm2_createek | hexadecimal handle id | |
 | -H | --obj-handle | tpm2_certify | hex handle id | |
-| -H | --parent | tpm2_create | hex handle id | |
-| -H | --hierarchy | tpm2_createprimary, tpm2_hash | char (hierarchy pretty name) | |
-| -I | --in-file | tpm2_create, tpm2_encryptdecrypt | file path | |
+| -H | --object | tpm2_readpublic | hex handle id | |
+| -H | --parent | tpm2_create, tpm2_load | hex handle id | |
+| -H | --parent-key-handle | tpm2_import | hex handle id | |
+| -H | --item | tpm2_unseal | hex handle id | |
+| -H | --hierarchy | tpm2_createprimary, tpm2_hash, tpm2_loadexternal | char (hierarchy pretty name) | |
+| -I | --in-file | tpm2_create, tpm2_encryptdecrypt, tpm2_rsadecrypt | file path | |
+| -I | --index-password | tpm2_nvdefine | password | |
 | -K | --pwdk | tpm2_certify, tpm2_create, tpm2_createprimary | password | |
 | -L | --lockout-passwd | tpm2_clear, tpm2_clearlock | password | |
-| -L | --policy-file | tpm2_create, tpm2_createprimary | file path | |
+| -L | --policy-file | tpm2_create, tpm2_createprimary, tpm2_nvdefine | file path | |
 | -L | --old-lockout-passwd | tpm2_changeauth | password | |
-| -L | --set-list | tpm2_createpolicy | (string) list of PCR IDs | |
+| -L | --set-list | tpm2_createpolicy, tpm2_nvread, tpm2_nvwrite, tpm2_policypcr, tpm2_unseal | (string) list of PCR IDs | |
+| -L | --sel-list | tpm2_pcrlist, tpm2_quote | (string) list of PCR IDs | |
 | -N | --non-persistent | tpm2_getmanufec | N/A | |
 | -O | --old-owner-passwd | tpm2_changeauth | password | |
 | -O | --offline | tpm2_getmanufec | file path | |
 | -P | --auth-XXX | - | - | - | goal |
 | -P | --pwda | tpm2_evictcontrol | password | |
 | -P | --pwdo | tpm2_certify | password | |
-| -P | --pwdp | tpm2_create, tpm2_createprimary | password | |
+| -P | --pwdp | tpm2_create, tpm2_createprimary, tpm2_load | password | |
 | -P | --password | tpm2_activatecredential | password | |
-| -P | --pwdk | tpm2_encryptdecrypt, tpm2_hmac | password | |
+| -P | --handle-passwd | tpm2_nvdefine, tpm2_nvread, tpm2_nvreadlock, tpm2_nvrelease, tpm2_nvwrite | password | |
+| -P | --pwdk | tpm2_encryptdecrypt, tpm2_hmac, tpm2_rsadecrypt, tpm2_rsaencrypt, tpm2_sign, tpm2_unseal | password | |
 | -P | --ek-passwd | tpm2_getmanufec | password | |
 | -P | --eKPasswd | tpm2_createek | password | |
-| -P | --ak-passwd | tpm2_createak | password | |
+| -P | --ak-passwd | tpm2_createak, tpm2_quote | password | |
+| -P | --passwd | tpm2_pcrevent | password | |
 | -P | --policy-pcr | tpm2_createpolicy | N/A | |
-| -S | --session | tpm2_evictcontrol, tpm2_create, tpm2_createprimary, tpm2_encryptdecrypt, tpm2_flushcontext, tpm2_getmanufec, tpm2_createek, tpm2_hmac | file path | |
+| -Q | --quiet | common option | |
+| -S | --session | tpm2_evictcontrol, tpm2_create, tpm2_createprimary, tpm2_encryptdecrypt, tpm2_flushcontext, tpm2_getmanufec, tpm2_createek, tpm2_hmac, tpm2_load, tpm2_nvdefine, tpm2_nvread, tpm2_nvrelease, tpm2_nvwrite, tpm2_pcrevent, tpm2_policypcr, tpm2_policyrestart, tpm2_quote, tpm2_rsadecrypt, tpm2_sign, tpm2_startauthsession | file path | |
+| -S | --input-session-handle | tpm2_nvreadlock, tpm2_unseal, tpm2_verifysignature | file path | |
+| -T | --tcti | tcti options | option string | |
 | -U | --SSL_NO_VERIFY | tpm2_getmanufec | N/A | |
+| -V | --verbose | common option | N/A | |
+| -Z | --enable-errata | common option | N/A | |

@@ -2,11 +2,12 @@
 
 ***
 | short form | long form | used by | argument type | canonical |
-|------------|-----------|---------|---------------|-----------|
+| :---: | --- | --- | --- | --- |
 | -a | --attest-file | tpm2_certify | file path | |
 | -a | --auth-policy-session | tpm2_createpolicy | TPM session policy | |
 | -a | --auth-policy-session | tpm2_startauthsession | N/A | |
 | -a | --auth-handle | tpm2_nvdefine, tpm2_nvread, tpm2_nvreadlock, tpm2_nvrelease, tpm2_nvwrite | char handle pretty name | |
+| -a | --hierarchy | tpm2_createprimary, tpm2_evictcontrol, tpm2_hash, tpm2_loadexternal | hierarchy value | |
 | -c | --context | tpm2_evictcontrol, tpm2_createek | file path | |
 | -c | --ak-context | tpm2_quote, tpm2_readpublic | file path | |
 | -c | --context-parent | tpm2_create, tpm2_load | file path | |
@@ -14,8 +15,10 @@
 | -c | --item-context | tpm2_unseal | file path | |
 | -c | --clear | tpm2_clearlock. tpm2_startup | N/A | |
 | -c | --clear-lockout | tpm2_dictionarylockout | N/A | |
-| -e | --endorse-password | tpm2_activatecredential, tpm2_changeauth | password | |
-| -e | --endorse-passwd | tpm2_getmanufec, tpm2_createak, tpm2_createek | password | |
+| -e | --auth-endorse | tpm2_getmanufec | auth value | |
+| -e | --endorse-password | tpm2_activatecredential | password | |
+| -e | --endorse-passwd | tpm2_changeauth, tpm2_createak | auth value | |
+| -e | --auth-endorse | tpm2_createek | auth value | |
 | -e | --enc-key | tpm2_makecredential | file path | |
 | -f | --in-file | tpm2_activatecredential, tpm2_certify | file path | |
 | -f | --policy-file | tpm2_createpolicy, tpm2_policypcr | file path | |
@@ -41,7 +44,8 @@
 | -n | --name | tpm2_load | file path | |
 | -n | --name | tpm2_makecredential | string | |
 | -o | --out-file | tpm2_activatecredential, tpm2_getrandom, tpm2_hash, tpm2_hmac, tpm2_makecredential, tpm2_pcrlist, tpm2_readpublic, tpm2_rsadecrypt, tpm2_rsaencrypt, tpm2_send, tpm2_unseal |  file path | |
-| -o | --owner-passwd | tpm2_changeauth, tpm2_getmanufec, tpm2_createak, tpm2_createek | password | |
+| -o | --owner-passwd | tpm2_changeauth | auth value | |
+| -o | --auth-owner | tpm2_createak, tpm2_createek, tpm2_getmanufec | auth value | |
 | -o | --offset | tpm2_nvread, tpm2_nvwrite | offset within index | |
 | -p | --persistent | tpm2_evictcontrol | hex handle id | |
 | -p | --platform | tpm2_clear, tpm2_clearlock | N/A | |
@@ -65,10 +69,9 @@
 | -t | --type | tpm2_print | `TPMS_ATTEST` | |A
 | -u | --pubfile | tpm2_create, tpm2_load, tpm2_loadexternal | file path | |
 | -v | --version | common option | N/A |
-| -x | --pcr-index | - | - | - | goal |
+| **-x** | **--pcr-index** |  |  |  | Y |
 | -x | --nv-index | tpm2_nvdefine | index id | |
 | -x | --index | tpm2_nvread, tpm2_nvreadlock, tpm2_nvrelease, tpm2_nvwrite | index id | |
-| -A | --auth | tpm2_evictcontrol | character representing hierarchy (o or p) | |
 | -A | --object-attributes | tpm2_create, tpm2_createprimary | object attributes | |
 | -C | --key-context | tpm2_activatecredential | file path | |
 | -C | --obj-context | tpm2_certify | file path | |
@@ -76,7 +79,7 @@
 | -C | --capability | tpm2_getcap | capability name | |
 | -D | --decrypt | tpm2_encryptdecrypt | N/A | |
 | -D | --digest | tpm2_sign, tpm2_verifysignature | file path | |
-| -E | --old-endorse-passwd | tpm2_changeauth | password | |
+| -E | --old-auth-endorse | tpm2_changeauth | auth value | |
 | -E | --ec-cert | tpm2_getmanufec | file path | |
 | -E | --ek-handle | tpm2_getcreateak | hex handle id | |
 | -F | --pcr-input-file | tpm2_createpolicy, tpm2_nvread, tpm2_nvwrite, tpm2_policypcr, tpm2_unseal | file path | |
@@ -88,33 +91,37 @@
 | -H | --parent | tpm2_create, tpm2_load | hex handle id | |
 | -H | --parent-key-handle | tpm2_import | hex handle id | |
 | -H | --item | tpm2_unseal | hex handle id | |
-| -H | --hierarchy | tpm2_createprimary, tpm2_hash, tpm2_loadexternal | char (hierarchy pretty name) | |
 | -I | --in-file | tpm2_create, tpm2_encryptdecrypt, tpm2_rsadecrypt | file path | |
-| -I | --index-password | tpm2_nvdefine | password | |
-| -K | --pwdk | tpm2_certify, tpm2_create, tpm2_createprimary | password | |
-| -L | --lockout-passwd | tpm2_clear, tpm2_clearlock | password | |
+| -I | --auth-index | tpm2_nvdefine | auth value | |
+| -K | --auth-key | tpm2_create | auth value | |
+| -K | --auth-object | tpm2_createprimary | auth value | |
+| -K | --auth-key | tpm2_certify | auth value | |
+| -L | --auth-lockout | tpm2_clear, tpm2_clearlock | auth value | |
 | -L | --policy-file | tpm2_create, tpm2_createprimary, tpm2_nvdefine | file path | |
-| -L | --old-lockout-passwd | tpm2_changeauth | password | |
+| -L | --old-auth-lockout | tpm2_changeauth | auth value | |
 | -L | --set-list | tpm2_createpolicy, tpm2_nvread, tpm2_nvwrite, tpm2_policypcr, tpm2_unseal | (string) list of PCR IDs | |
 | -L | --sel-list | tpm2_pcrlist, tpm2_quote | (string) list of PCR IDs | |
 | -N | --non-persistent | tpm2_getmanufec | N/A | |
-| -O | --old-owner-passwd | tpm2_changeauth | password | |
+| -O | --old-auth-owner | tpm2_changeauth | auth value | |
 | -O | --offline | tpm2_getmanufec | file path | |
-| -P | --auth-XXX | - | - | - | goal |
+| **-P** | **--auth-XXX** |  |  |  | Y |
+| -P | --auth-key | tpm2_rsadecrypt, tpm2_encryptdecrypt, tpm2_sign, tpm2_unseal, tpm2_hmac | auth value | Y |
+| -P | --auth-ak | tpm2_quote, tpm2_createak | auth value | Y |
+| -P | --auth-ek | tpm2_getmanufec | auth value | Y |
+| -P | --auth-pcr | tpm2_pcrevent | auth value | Y |
+| -P | --auth-object | tpm2_certify | auth value | |
+| -P | --auth-parent | tpm2_create, tpm2_load | auth value | |
+| -P | --auth-hierarchy | tpm2_createprimary, tpm2_evictcontrol, tpm2_nvdefine, tpm2_nvread, tpm2_nvwrite | auth value | |
+| -P | --auth-lockout | tpm2_dictionarylockout | auth value | |
 | -P | --pwda | tpm2_evictcontrol | password | |
-| -P | --pwdo | tpm2_certify | password | |
-| -P | --pwdp | tpm2_create, tpm2_createprimary, tpm2_load | password | |
 | -P | --password | tpm2_activatecredential | password | |
-| -P | --handle-passwd | tpm2_nvdefine, tpm2_nvread, tpm2_nvreadlock, tpm2_nvrelease, tpm2_nvwrite | password | |
-| -P | --pwdk | tpm2_encryptdecrypt, tpm2_hmac, tpm2_rsadecrypt, tpm2_rsaencrypt, tpm2_sign, tpm2_unseal | password | |
-| -P | --ek-passwd | tpm2_getmanufec | password | |
-| -P | --eKPasswd | tpm2_createek | password | |
-| -P | --ak-passwd | tpm2_createak, tpm2_quote | password | |
-| -P | --passwd | tpm2_pcrevent | password | |
+| -P | --handle-passwd | tpm2_nvreadlock, tpm2_nvrelease | auth value | |
+| -P | --pwdk | tpm2_rsaencrypt | auth value | |
+| -P | --auth-ek | tpm2_createek | auth value | |
 | -P | --policy-pcr | tpm2_createpolicy | N/A | |
 | -Q | --quiet | common option | |
-| -S | --session | tpm2_evictcontrol, tpm2_create, tpm2_createprimary, tpm2_encryptdecrypt, tpm2_flushcontext, tpm2_getmanufec, tpm2_createek, tpm2_hmac, tpm2_load, tpm2_nvdefine, tpm2_nvread, tpm2_nvrelease, tpm2_nvwrite, tpm2_pcrevent, tpm2_policypcr, tpm2_policyrestart, tpm2_quote, tpm2_rsadecrypt, tpm2_sign, tpm2_startauthsession | file path | |
-| -S | --input-session-handle | tpm2_nvreadlock, tpm2_unseal, tpm2_verifysignature | file path | |
+| -S | --session | tpm2_evictcontrol, tpm2_create, tpm2_createprimary, tpm2_encryptdecrypt, tpm2_flushcontext, tpm2_getmanufec, tpm2_createek, tpm2_hmac, tpm2_load, tpm2_nvrelease, tpm2_nvwrite, tpm2_policypcr, tpm2_policyrestart, tpm2_quote, tpm2_rsadecrypt, tpm2_startauthsession | file path | |
+| -S | --input-session-handle | tpm2_nvreadlock, tpm2_verifysignature | file path | |
 | -T | --tcti | tcti options | option string | |
 | -U | --SSL_NO_VERIFY | tpm2_getmanufec | N/A | |
 | -V | --verbose | common option | N/A | |

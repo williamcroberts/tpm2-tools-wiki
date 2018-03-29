@@ -4,7 +4,20 @@
 
 ## Current options
 
-The options as of ~3.0.3+ [60768ba](https://github.com/tpm2-software/tpm2-tools/commit/60768ba73043bdf68311047bdfd23c9e89ba16cf) are documented in a separate wiki page: [[3.0.x-options-matrix]].
+The options as of ~3.0.3+ / commit [60768ba](https://github.com/tpm2-software/tpm2-tools/commit/60768ba73043bdf68311047bdfd23c9e89ba16cf) are documented in a separate wiki page: [[3.0.x-options-matrix]].
+
+### Common short options
+
+Options which, in their short form, are common across all tools (same short option expects same argument type). These remain the same as 3.0.x versions of the tools.
+
+| Short form | Argument type | Details | 
+| :---: | --- | --- |
+| -h | None | help |
+| -Q | None | quiet |
+| -T | TCTI options | - |
+| -v | None | version |
+| -V | None | verbose |
+| -Z | None | enable errata fixups |
 
 ## Command groups
 
@@ -34,15 +47,14 @@ The options as of ~3.0.3+ [60768ba](https://github.com/tpm2-software/tpm2-tools/
 
 ## Tool option proposals
 
-### Common short options
+### Parent and current object
 
-Options which, in their short form, are common across all tools (same short option expects same argument type)
+When tools take a parent and/or current object we can simplify the options by having **-C** always be the parent object and **-c** the child object.
+Rather than having a separate parameter for different object types (file vs. handle) we can reduce the number of related options from 4 to 2  by defining semantics for specifying handle vs. file and have a library to determine the object type and load it appropriately.
 
-| Short form | Argument type | Details | 
-| :---: | --- | --- |
-| -h | None | help |
-| -Q | None | quiet |
-| -T | TCTI options | - |
-| -v | None | version |
-| -V | None | verbose |
-| -Z | None | enable errata fixups |
+For example:
+```
+0x1234 - specifies a handle
+foo.dat - specifies a context file
+file:0x1234 - specifies a file
+```

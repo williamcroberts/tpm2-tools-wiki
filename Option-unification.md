@@ -2,6 +2,10 @@
 
 **GOAL**: short options should be consistent in the _type_ of value they expect. This may not be possible for the entire tools suite, but should at least be achieved for the groups of tools mapping to the command groups in [Part 3 of the TPM spec](https://trustedcomputinggroup.org/wp-content/uploads/TPM-Rev-2.0-Part-3-Commands-01.38.pdf)
 
+## Current options
+
+The options as of ~3.0.3+ [60768ba](https://github.com/tpm2-software/tpm2-tools/commit/60768ba73043bdf68311047bdfd23c9e89ba16cf) are documented in a separate wiki page: [[3.0.x-options-matrix]].
+
 ## Command groups
 
 * Start-up: tpm2_startup

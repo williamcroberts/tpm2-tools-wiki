@@ -58,3 +58,7 @@ For example:
 foo.dat - specifies a context file
 file:0x1234 - specifies a file
 ```
+### Algorithm
+
+**-g** - should be name alg
+**-G** - should be object type/alg

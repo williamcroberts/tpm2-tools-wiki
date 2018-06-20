@@ -7,7 +7,7 @@ The TPM allows one to create objects. These objects can be keys or small amounts
 Before we create an object, it's important to understand the concept of hierarchies. The TPM 2.0 has 4 hierarchies, they are:
 1. platform - used by firmware and the OS
 2. owner - used by the owner (this is the one we will be using)
-3. endorsement - used for privacy sensitive keys
+3. endorsement - used for privacy sensitive keys, these keys are known to come from a valid TPM and platform.
 4. null - reset on every boot
 
 Each hierarchy is essentially a static seed value, with the exception of the null hierarchy, which is a new seed on every boot.

@@ -50,15 +50,24 @@ Options which, in their short form, are common across all tools (same short opti
 ### Parent and current object
 
 When tools take a parent and/or current object we can simplify the options by having **-C** always be the parent object and **-c** the child object.
-Rather than having a separate parameter for different object types (file vs. handle) we can reduce the number of related options from 4 to 2  by defining semantics for specifying handle vs. file and have a library to determine the object type and load it appropriately.
 
-For example:
+The method `tpm2_util_object_load` is used to parse an option argument value string and populate a `tpm2_loaded_object` with a parsed path and/or handle. The argument value string will recognised as a context file when prefixed with "*file:*" or should the value not be parsable as a handle number (as understood by `strtoul()`). For example:
 ```
 0x1234 - specifies a handle
 foo.dat - specifies a context file
-file:0x1234 - specifies a file
+file:0x1234 - specifies a context file
 ```
+
+| Short form | Argument type | Details | 
+| :---: | --- | --- |
+| -c | handle id or context file path | child/current object |
+| -C | handle id or context file path | parent object |
+
 ### Algorithm
 
-**-g** - should be name alg
-**-G** - should be object type/alg
+When tools take algorithm specifiers as arguments the **-g** and **-G** short options will be used.**-g** should always specify the name algorithm whilst **-G** should be object/type algorithm.
+
+| Short form | Argument type | Details | 
+| :---: | --- | --- |
+| -g | algorithm type specifier (see Algorithm Specifiers) | name alg |
+| -G | algorithm type specifier (see Algorithm Specifiers) | object type/alg |

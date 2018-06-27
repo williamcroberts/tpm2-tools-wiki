@@ -59,6 +59,15 @@ file:0x1234 - specifies a context file
 | -c | handle id or context file path | child/current object |
 | -C | handle id or context file path | parent object |
 
+### Object authorization
+
+When objects require an authorization value we use **-P** to supply the authorization value for any parent object and **-p** to supply the authorization value for the current/child object.
+
+| Short form | Argument type | Details | 
+| :---: | --- | --- |
+| -p | authorization value | authorization for child/current object |
+| -P | authorization value | authorization for parent object |
+
 ### Algorithm
 
 When tools take algorithm specifiers as arguments the **-g** and **-G** short options will be used.**-g** should always specify the name algorithm whilst **-G** should be object/type algorithm.

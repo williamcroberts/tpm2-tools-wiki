@@ -1,5 +1,5 @@
 # Introduction
-Since you're here, I will assume you want to get started playing around with a version 2.0 TPM.
+Since you're here, I will assume you want to get started playing around with a version 2.0 TPM. We will use a TPM simulator, so this will work for those without hardware support.
 
 For those unfamiliar, the TPM provides out-of-band general cryptographic, storage, policy
 and key management operations (among other things).
@@ -110,9 +110,9 @@ caveats with RMs, but we won't discuss those here, and instead focus on the basi
 
 With that said, lets start the RM:
 ```
-tpm2-abrmd --allow-root
+tpm2-abrmd --allow-root --tcti=mssim
 ```
-abrmd is designed by default to connect to the `tpm_server` that was started previously.
+abrmd is designed by default to connect to a hardware TPM, hwoever we need it to connect to the `tpm_server` that was started previously, so pass the `--tcti=mssim` option to tell it to do so.
 
 # Hello World
 
